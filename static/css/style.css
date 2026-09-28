@@ -1,0 +1,734 @@
+/* =========================================================
+   1. CORE SYSTEM & THEME STYLES
+   ========================================================= */
+:root {
+  --bg-dark: #061016;
+  --bg-secondary: #0b1820;
+  --bg-card: rgba(11, 24, 32, 0.75);
+  --text-primary: #ffffff;
+  --text-muted: #a0aec0;
+  --accent-cyan: #00f2fe;
+  --accent-purple: #9d4edd;
+  --accent-green: #00e676;
+  --accent-red: #ff3366;
+  --rgb-gradient: linear-gradient(90deg, #ff0055, #ff5000, #ffcc00, #00e676, #00f2fe, #7000ff, #ff0055);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', 'Noto Sans Devanagari', sans-serif;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  width: 100%;
+  min-height: 100vh;
+  background-color: var(--bg-dark);
+  color: var(--text-primary);
+  overflow-x: hidden;
+}
+
+/* Top RGB Border Line */
+.top-rgb-bar {
+  height: 4px;
+  width: 100%;
+  background: var(--rgb-gradient);
+  background-size: 200% 100%;
+  animation: rgbShift 6s linear infinite;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 9999;
+}
+
+@keyframes rgbShift {
+  0% { background-position: 0% 0%; }
+  100% { background-position: 200% 0%; }
+}
+
+/* =========================================================
+   2. NAVBAR
+   ========================================================= */
+.navbar {
+  position: fixed;
+  top: 4px;
+  left: 0;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.6rem 2rem;
+  background: rgba(6, 16, 22, 0.92);
+  backdrop-filter: blur(12px);
+  z-index: 5000;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.nav-brand {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-decoration: none;
+}
+
+.nav-brand img {
+  height: 40px;
+  object-fit: contain;
+}
+
+.brand-subtext {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #ffcc00;
+  letter-spacing: 0.5px;
+}
+
+.nav-links {
+  display: flex;
+  gap: 1.5rem;
+  list-style: none;
+  align-items: center;
+}
+
+.nav-links a {
+  color: var(--text-primary);
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 0.95rem;
+  position: relative;
+  padding: 4px 0;
+  transition: all 0.3s ease;
+}
+
+.nav-links a::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0%;
+  height: 2px;
+  background: var(--rgb-gradient);
+  transition: width 0.3s ease;
+}
+
+.nav-links a:hover {
+  color: var(--accent-cyan);
+  transform: translateY(-2px);
+}
+
+.nav-links a:hover::after {
+  width: 100%;
+}
+
+.hamburger {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  cursor: pointer;
+}
+
+.hamburger span {
+  width: 25px;
+  height: 3px;
+  background-color: #fff;
+  border-radius: 2px;
+  transition: 0.3s;
+}
+
+/* =========================================================
+   3. RIGHT-TO-LEFT MOVING TICKER
+   ========================================================= */
+.ticker-wrap {
+  width: 100%;
+  background: var(--bg-secondary);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  overflow: hidden;
+  padding: 12px 0;
+  margin-top: 80px;
+  position: relative;
+  z-index: 1000;
+}
+
+.ticker-track {
+  display: flex;
+  width: max-content;
+  animation: ticker-loop 22s linear infinite;
+}
+
+.ticker-item {
+  white-space: nowrap;
+  color: #ffd700;
+  font-weight: 700;
+  font-size: 1.05rem;
+  padding-right: 50px;
+  letter-spacing: 0.5px;
+}
+
+@keyframes ticker-loop {
+  0% { transform: translateX(0%); }
+  100% { transform: translateX(-50%); }
+}
+
+.ticker-wrap:hover .ticker-track {
+  animation-play-state: paused;
+}
+
+/* =========================================================
+   4. HERO FOREST ROAD & CAR INTEGRATION
+   ========================================================= */
+.hero-container {
+  position: relative;
+  width: 100%;
+  height: 85vh;
+  min-height: 580px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.forest-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url('../img/forest-background.jpg');
+  background-size: cover;
+  background-position: center bottom;
+  z-index: 1;
+  transition: transform 0.1s ease-out;
+}
+
+.hero-overlay-text {
+  position: relative;
+  z-index: 10;
+  margin-top: 2rem;
+  text-align: center;
+  background: rgba(6, 16, 22, 0.75);
+  padding: 1.2rem 2.5rem;
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(8px);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.6);
+}
+
+.hero-overlay-text h1 {
+  font-size: 2.2rem;
+  font-weight: 800;
+  color: #ffffff;
+  letter-spacing: 1px;
+}
+
+.hero-overlay-text p {
+  color: var(--accent-cyan);
+  font-size: 1rem;
+  font-weight: 500;
+  margin-top: 4px;
+}
+
+.car-wrapper {
+  position: relative;
+  z-index: 20;
+  margin-bottom: 25px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+.aura-car {
+  display: block;
+  width: 580px;
+  max-width: 88vw;
+  height: auto;
+  object-fit: contain;
+  filter: drop-shadow(0px 20px 14px rgba(0, 0, 0, 0.9)) brightness(0.95) contrast(1.05);
+  transition: transform 0.1s ease-out;
+}
+
+.car-wrapper::after {
+  content: '';
+  width: 82%;
+  max-width: 500px;
+  height: 20px;
+  background: radial-gradient(ellipse at center, rgba(0, 0, 0, 0.95) 0%, rgba(0, 0, 0, 0.4) 60%, transparent 80%);
+  position: absolute;
+  bottom: 5px;
+  z-index: -1;
+  border-radius: 50%;
+  filter: blur(4px);
+}
+
+/* =========================================================
+   5. GLASSMORPHISM CARDS & SECTIONS
+   ========================================================= */
+.section {
+  padding: 4rem 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.section-title {
+  text-align: center;
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 2.5rem;
+  position: relative;
+}
+
+.section-title::after {
+  content: '';
+  display: block;
+  width: 50px;
+  height: 3px;
+  background: var(--rgb-gradient);
+  margin: 8px auto 0;
+  border-radius: 2px;
+}
+
+.facilities-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+}
+
+.facility-card {
+  background: var(--bg-card);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 1.8rem;
+  border-radius: 16px;
+  text-align: center;
+  backdrop-filter: blur(10px);
+  transition: all 0.3s ease;
+}
+
+.facility-card:hover {
+  border-color: var(--accent-cyan);
+  transform: translateY(-6px);
+  box-shadow: 0 10px 25px rgba(0, 242, 254, 0.25);
+}
+
+.facility-icon {
+  font-size: 2.5rem;
+  margin-bottom: 0.8rem;
+}
+
+.facility-card h3 {
+  font-size: 1.25rem;
+  color: #fff;
+  margin-bottom: 0.5rem;
+}
+
+.facility-card p {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+/* Tour Cards */
+.tour-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+
+.tour-card {
+  background: var(--bg-card);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  padding: 1.8rem;
+  border-radius: 16px;
+  backdrop-filter: blur(10px);
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.tour-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 4px;
+  height: 100%;
+  background: var(--rgb-gradient);
+}
+
+.tour-card:hover {
+  transform: translateY(-5px);
+  border-color: rgba(255, 204, 0, 0.5);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+}
+
+.tour-date {
+  display: inline-block;
+  background: rgba(0, 242, 254, 0.15);
+  color: var(--accent-cyan);
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin-bottom: 0.8rem;
+}
+
+/* =========================================================
+   6. SOLID CONTRAST CALENDAR & BOOKING FORM
+   ========================================================= */
+.booking-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  background: #0f1722; /* Solid dark background instead of glass */
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  padding: 2rem;
+  border-radius: 20px;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.8);
+}
+
+.calendar-box {
+  width: 100%;
+}
+
+.calendar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.2rem;
+  padding: 0 4px;
+}
+
+.calendar-header h3 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--accent-cyan, #00f2fe);
+}
+
+.calendar-nav-btn {
+  background: #1e293b;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+  padding: 8px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.calendar-nav-btn:hover {
+  background: var(--accent-cyan, #00f2fe);
+  color: #0f1722;
+  border-color: var(--accent-cyan, #00f2fe);
+}
+
+.calendar-weekdays {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  text-align: center;
+  font-weight: 700;
+  font-size: 0.85rem;
+  color: #94a3b8;
+  margin-bottom: 0.8rem;
+}
+
+.calendar-days {
+  display: grid !important;
+  grid-template-columns: repeat(7, 1fr) !important;
+  gap: 8px;
+  min-height: 240px;
+}
+
+/* Base style for calendar date boxes */
+.cal-day {
+  aspect-ratio: 1;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  border-radius: 10px;
+  font-weight: 700 !important;
+  font-size: 1rem !important;
+  color: #ffffff;
+  background: #1e293b; /* Solid dark tile background */
+  border: 1px solid #334155;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  user-select: none;
+}
+
+/* Available Dates - High-visibility Solid Contrast */
+.cal-day.available {
+  background: #064e3b !important; /* Solid dark green */
+  color: #34d399 !important; /* Bright green text */
+  border: 1px solid #10b981 !important;
+}
+
+.cal-day.available:hover {
+  background: #10b981 !important; /* Bright solid green fill */
+  color: #064e3b !important;
+  transform: scale(1.05);
+  box-shadow: 0 0 12px rgba(16, 185, 129, 0.5);
+}
+
+/* Booked Dates - Solid Red Contrast */
+.cal-day.booked {
+  background: #7f1d1d !important; /* Solid dark red */
+  color: #fca5a5 !important;
+  border: 1px solid #ef4444 !important;
+  cursor: not-allowed;
+  text-decoration: line-through;
+  opacity: 0.8;
+}
+
+/* Empty Month Offset Slots */
+.cal-day.empty {
+  cursor: default !important;
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+.calendar-legend {
+  display: flex;
+  gap: 1.5rem;
+  margin-top: 1.2rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #e2e8f0;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.legend-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+}
+
+.legend-dot.green {
+  background: #10b981;
+}
+
+.legend-dot.red {
+  background: #ef4444;
+}
+
+/* Form Elements */
+.form-group {
+  margin-bottom: 1.2rem;
+}
+
+.form-group label {
+  display: block;
+  font-size: 0.85rem;
+  margin-bottom: 0.4rem;
+  color: #94a3b8;
+  font-weight: 600;
+}
+
+.form-control {
+  width: 100%;
+  padding: 0.8rem 1rem;
+  background: #1e293b;
+  border: 1px solid #334155;
+  border-radius: 10px;
+  color: #ffffff;
+  font-size: 0.95rem;
+  transition: 0.3s;
+}
+
+.form-control:focus {
+  outline: none;
+  border-color: var(--accent-cyan, #00f2fe);
+  box-shadow: 0 0 10px rgba(0, 242, 254, 0.3);
+}
+
+/* Responsive adjustment for mobile screens */
+@media (max-width: 768px) {
+  .booking-container {
+    grid-template-columns: 1fr;
+  }
+}
+/* =========================================================
+   7. BUTTONS & MODALS
+   ========================================================= */
+.btn-primary {
+  width: 100%;
+  padding: 0.9rem;
+  background: var(--rgb-gradient);
+  background-size: 200% 100%;
+  border: none;
+  border-radius: 10px;
+  color: #fff;
+  font-weight: 700;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.btn-primary:hover {
+  background-position: 100% 0%;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 242, 254, 0.4);
+}
+/* Small Check Availability button */
+.cta-section .btn-primary {
+  width: auto !important;
+  min-width: 170px;
+  padding: 0.7rem 1.4rem;
+}
+
+.btn-whatsapp {
+  background: #25d366;
+  color: #fff;
+  padding: 0.6rem 1.4rem;
+  border-radius: 25px;
+  text-decoration: none;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.3s ease;
+}
+
+.btn-whatsapp:hover {
+  background: #20ba5a;
+  box-shadow: 0 4px 15px rgba(37, 211, 102, 0.4);
+}
+
+/* Modal Popup */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10000;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+.modal-overlay.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.modal-content {
+  background: var(--bg-secondary);
+  border: 1px solid var(--accent-cyan);
+  padding: 2.5rem;
+  border-radius: 20px;
+  max-width: 480px;
+  width: 90%;
+  text-align: center;
+  box-shadow: 0 10px 40px rgba(0, 242, 254, 0.3);
+}
+
+.modal-icon {
+  font-size: 3.5rem;
+  margin-bottom: 1rem;
+}
+
+.modal-content h2 {
+  color: #fff;
+  margin-bottom: 0.5rem;
+}
+
+.modal-details {
+  background: rgba(6, 16, 22, 0.8);
+  border: 1px dashed rgba(255, 255, 255, 0.2);
+  padding: 1rem;
+  border-radius: 12px;
+  margin: 1.2rem 0;
+  text-align: left;
+  font-size: 0.95rem;
+}
+
+/* =========================================================
+   8. FOOTER & RESPONSIVE
+   ========================================================= */
+footer {
+  text-align: center;
+  padding: 2.5rem 2rem;
+  background: var(--bg-secondary);
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  color: var(--text-muted);
+  font-size: 0.9rem;
+}
+
+@media (max-width: 900px) {
+  .booking-container {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .hamburger {
+    display: flex;
+  }
+  .nav-links {
+    position: fixed;
+    top: 60px;
+    right: -100%;
+    width: 250px;
+    height: calc(100vh - 60px);
+    background: var(--bg-secondary);
+    flex-direction: column;
+    padding: 2rem;
+    transition: 0.3s;
+    border-left: 1px solid rgba(255,255,255,0.1);
+  }
+  .nav-links.active {
+    right: 0;
+  }
+  .hero-container {
+    height: 70vh;
+    min-height: 480px;
+  }
+  .aura-car {
+    width: 90vw;
+  }
+  .hero-overlay-text h1 {
+    font-size: 1.5rem;
+  }
+}
+
+/* Ensure PNG transparency and proper highway centering */
+.car-wrapper {
+  position: relative;
+  z-index: 20;
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+.aura-car {
+  display: block;
+  width: 580px;
+  max-width: 88vw;
+  height: auto;
+  object-fit: contain;
+  background: transparent !important; /* Forces transparent background */
+  filter: drop-shadow(0px 22px 18px rgba(0, 0, 0, 0.85)) brightness(0.98) contrast(1.05);
+  transition: transform 0.1s linear;
+}

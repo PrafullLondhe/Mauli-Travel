@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>{% block title %}Mauli Travel | Buldana{% endblock %}</title>
+<meta name="description" content="Mauli Travel cab service and tour packages in Buldana, Maharashtra.">
+<link rel="stylesheet" href="{{ url_for('static',filename='css/style.css') }}">
+</head>
+<body class="site-body">
+<nav class="nav notebook-nav">
+  <div class="container navin">
+    <a class="brand" href="{{url_for('home')}}">
+      <span class="brand-logo-wrap"><img src="{{url_for('static',filename='img/gajanan-logo.png')}}" alt="Shree Sant Gajanan Maharaj"></span>
+      <span class="brand-copy"><strong>MAULI TRAVEL</strong><small>BULDANA • MAHARASHTRA</small></span>
+    </a>
+    <div class="links" id="navLinks">
+      <a href="{{url_for('home')}}">Home</a><a href="{{url_for('tours')}}">Tours</a><a href="{{url_for('about')}}">About</a><a href="{{url_for('contact')}}">Contact</a>
+      {% if logged_user %}<a href="{{url_for('dashboard')}}">My Bookings</a><a href="{{url_for('logout')}}">Logout</a>{% else %}<a href="{{url_for('login')}}">Login</a>{% endif %}
+      <a class="nav-book" href="{{url_for('book')}}">Book Now ✦</a>
+    </div>
+    <button id="menu" class="menu-btn" type="button">☰</button>
+  </div>
+</nav>
+<div class="ticker"><div class="ticker-track"><span>संत श्री गजानन महाराज&nbsp;&nbsp; !! गण गण गणात बोते !!</span><span>संत श्री गजानन महाराज&nbsp;&nbsp; !! गण गण गणात बोते !!</span></div></div>
+{% with messages=get_flashed_messages(with_categories=true) %}{% if messages %}<div class="container flash-area">{% for category,msg in messages %}<div class="notice {{category}}">{{msg}}</div>{% endfor %}</div>{% endif %}{% endwith %}
+{% block content %}{% endblock %}
+<footer class="footer notebook-footer">
+  <div class="container footer-grid">
+    <div><h3>Mauli Travel</h3><p>{{business.tagline}}.</p><p>Cab service • Tour packages • Well-maintained Aura • AC / Non-AC</p></div>
+    <div><h3>Quick Links</h3><a href="{{url_for('book')}}">Book a Cab</a><a href="{{url_for('tours')}}">Tour Packages</a><a href="{{url_for('contact')}}">Contact</a></div>
+    <div><h3>Contact</h3><p>{{business.location}}</p><p>{{business.phone_display}}</p><a href="https://wa.me/{{business.whatsapp}}" target="_blank" rel="noopener">WhatsApp Us</a></div>
+  </div>
+  <div class="container footer-bottom">!! गण गण गणात बोते !!<br><small>© 2026 Mauli Travel. All rights reserved.</small></div>
+</footer>
+<script>window.selectedDate={{ (selected_date|default(''))|tojson }};</script>
+<script src="{{url_for('static',filename='js/main.js')}}"></script>
+</body></html>

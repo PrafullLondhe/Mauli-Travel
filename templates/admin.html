@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Admin Dashboard - MAULI TRAVEL</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <style>
+    table { width: 100%; border-collapse: collapse; margin-top: 1rem; }
+    th, td { padding: 12px; text-align: left; border-bottom: 1px solid rgba(255,255,255,0.1); font-size: 0.9rem; }
+    th { background: rgba(0,242,254,0.1); color: var(--accent-cyan); }
+    .status-badge { padding: 4px 10px; border-radius: 12px; font-weight: 600; font-size: 0.8rem; }
+    .status-pending { background: rgba(255,204,0,0.2); color: #ffcc00; }
+    .status-accepted { background: rgba(0,230,118,0.2); color: var(--accent-green); }
+    .status-rejected { background: rgba(255,51,102,0.2); color: var(--accent-red); }
+    .btn-sm { padding: 4px 10px; border-radius: 6px; text-decoration: none; font-size: 0.8rem; font-weight: 600; }
+  </style>
+</head>
+<body style="padding: 2rem;">
+
+  <div style="max-width: 1200px; margin: 0 auto;">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+      <h2>Mauli Travel - Admin Panel</h2>
+      <a href="{{ url_for('admin_logout') }}" class="btn-sm" style="background: var(--accent-red); color: #fff;">Logout</a>
+    </div>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, message in messages %}
+          <div style="padding: 0.8rem; border-radius: 8px; margin-bottom: 1rem; background: rgba(0,242,254,0.1); color: var(--accent-cyan);">{{ message }}</div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+
+    <!-- Booking Requests Section -->
+    <div style="background: var(--bg-card); padding: 1.5rem; border-radius: 16px; margin-bottom: 2.5rem; border: 1px solid rgba(255,255,255,0.1);">
+      <h3 style="color: var(--accent-cyan);">Customer Booking Requests</h3>
+      {% if bookings %}
+        <table>
+          <thead>
+            <tr>
+              <th>ID</th><th>Customer</th><th>WhatsApp</th><th>From</th><th>To</th><th>Date</th><th>Time</th><th>Status</th><th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for b in bookings %}
+              <tr>
+                <td>#{{ b.id }}</td>
+                <td>{{ b.name }}</td>
+                <td><a href="https://wa.me/91{{ b.whatsapp }}" target="_blank" style="color: var(--accent-green);">{{ b.whatsapp }}</a></td>
+                <td>{{ b.pickup }}</td>
+                <td>{{ b.destination }}</td>
+                <td>{{ b.travel_date }}</td>
+                <td>{{ b.travel_time }}</td>
+                <td><span class="status-badge status-{{ b.status }}">{{ b.status|upper }}</span></td>
+                <td>
+                  {% if b.status == 'pending' %}
+                    <a href="{{ url_for('update_booking_status', booking_id=b.id, action='accept') }}" class="btn-sm" style="background: var(--accent-green); color: #000;">Accept</a>
+                    <a href="{{ url_for('update_booking_status', booking_id=b.id, action='reject') }}" class="btn-sm" style="background: var(--accent-red); color: #fff;">Reject</a>
+                  {% else %}
+                    <span style="color: var(--text-muted); font-size: 0.8rem;">Completed</span>
+                  {% endif %}
+                </td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      {% else %}
+        <p style="margin-top: 1rem; color: var(--text-muted);">No booking requests found.</p>
+      {% endif %}
+    </div>
+
+    <!-- Add Upcoming Tour Section -->
+    <div style="background: var(--bg-card); padding: 1.5rem; border-radius: 16px; border: 1px solid rgba(255,255,255,0.1);">
+      <h3 style="color: var(--accent-cyan); margin-bottom: 1rem;">Manage Upcoming Tours</h3>
+      
+      <form action="{{ url_for('add_tour') }}" method="POST" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 2rem;">
+        <input type="text" name="title" class="form-control" placeholder="Tour Title (e.g. Shegaon Yatra)" required>
+        <input type="date" name="date" class="form-control" required>
+        <input type="text" name="route" class="form-control" placeholder="Route (e.g. Buldana to Shegaon)" required>
+        <input type="text" name="details" class="form-control" placeholder="Package Details" required>
+        <button type="submit" class="btn-primary" style="grid-column: 1 / -1;">PUBLISH TOUR</button>
+      </form>
+
+      <h4>Published Tours</h4>
+      {% if tours %}
+        <table>
+          <thead>
+            <tr><th>Title</th><th>Date</th><th>Route</th><th>Details</th><th>Action</th></tr>
+          </thead>
+          <tbody>
+            {% for t in tours %}
+              <tr>
+                <td>{{ t.title }}</td>
+                <td>{{ t.date }}</td>
+                <td>{{ t.route }}</td>
+                <td>{{ t.details }}</td>
+                <td>
+                  <form action="{{ url_for('delete_tour', tour_id=t.id) }}" method="POST">
+                    <button type="submit" class="btn-sm" style="background: var(--accent-red); color: #fff; border: none; cursor: pointer;">Delete</button>
+                  </form>
+                </td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      {% else %}
+        <p style="margin-top: 0.5rem; color: var(--text-muted);">No tours published yet.</p>
+      {% endif %}
+    </div>
+
+  </div>
+
+</body>
+</html>

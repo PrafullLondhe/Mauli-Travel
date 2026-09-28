@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BOOK YOUR RIDE - MAULI TRAVEL</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+  <div class="top-rgb-bar"></div>
+
+  <!-- Navbar -->
+  <nav class="navbar">
+    <a href="{{ url_for('index') }}" class="nav-brand">
+      <img src="{{ url_for('static', filename='img/logo.png') }}" alt="MAULI TRAVEL" onerror="this.src='https://via.placeholder.com/120x40?text=MAULI+TRAVEL'">
+      <span class="brand-subtext">!! गण गण गणात बोते !!</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="{{ url_for('index') }}">Home</a></li>
+      <li><a href="{{ url_for('availability') }}">Availability</a></li>
+      <li><a href="https://wa.me/917020138677" target="_blank" class="btn-whatsapp">WhatsApp Booking</a></li>
+    </ul>
+  </nav>
+
+  <!-- Tagline Ticker -->
+  <div class="ticker-wrap">
+    <div class="ticker-track">
+      <div class="ticker-item">
+        संत श्री गजानन महाराज !! गण गण गणात बोते !! &nbsp;&nbsp;•&nbsp;&nbsp; MAULI TRAVEL - Buldana Cab Services &nbsp;&nbsp;•&nbsp;&nbsp;
+      </div>
+      <div class="ticker-item">
+        संत श्री गजानन महाराज !! गण गण गणात बोते !! &nbsp;&nbsp;•&nbsp;&nbsp; MAULI TRAVEL - Buldana Cab Services &nbsp;&nbsp;•&nbsp;&nbsp;
+      </div>
+    </div>
+  </div>
+
+  <section class="section">
+    <h2 class="section-title">BOOK YOUR RIDE</h2>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, message in messages %}
+          <div style="padding: 1rem; border-radius: 10px; margin-bottom: 1.5rem; text-align: center; background: rgba(255,51,102,0.2); color: var(--accent-red); border: 1px solid var(--accent-red);">
+            {{ message }}
+          </div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+
+    <div class="booking-container">
+      
+      <!-- Glass Calendar -->
+      <div class="calendar-box">
+        <div class="calendar-header">
+          <button class="calendar-nav-btn" id="prevMonth">&lt; Prev</button>
+          <h3 id="monthYear">Select Month</h3>
+          <button class="calendar-nav-btn" id="nextMonth">Next &gt;</button>
+        </div>
+
+        <div class="calendar-weekdays">
+          <div>Sun</div><div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div>
+        </div>
+
+        <div class="calendar-days" id="calendarDays"></div>
+
+        <div class="calendar-legend">
+          <div class="legend-item"><span class="legend-dot green"></span> 🟢 Available Date</div>
+          <div class="legend-item"><span class="legend-dot red"></span> 🔴 Accepted / Booked</div>
+        </div>
+      </div>
+
+      <!-- Booking Form -->
+      <div>
+        <form id="bookingForm" action="{{ url_for('book') }}" method="POST">
+          <div class="form-group">
+            <label for="name">Your Full Name</label>
+            <input type="text" id="name" name="name" class="form-control" placeholder="Enter your name" required>
+          </div>
+
+          <div class="form-group">
+            <label for="whatsapp">WhatsApp Phone Number</label>
+            <input type="tel" id="whatsapp" name="whatsapp" class="form-control" placeholder="e.g. 7020138677" required>
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+            <div class="form-group">
+              <label for="pickup">From (Pickup)</label>
+              <input type="text" id="pickup" name="pickup" class="form-control" placeholder="Pickup location" required>
+            </div>
+            <div class="form-group">
+              <label for="destination">To (Destination)</label>
+              <input type="text" id="destination" name="destination" class="form-control" placeholder="Destination" required>
+            </div>
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+            <div class="form-group">
+              <label for="travel_date">Travel Date</label>
+              <input type="date" id="travel_date" name="travel_date" class="form-control" required>
+            </div>
+            <div class="form-group">
+              <label for="travel_time">Travel Time</label>
+              <input type="time" id="travel_time" name="travel_time" class="form-control" required>
+            </div>
+          </div>
+
+          <button type="submit" class="btn-primary" style="margin-top: 0.5rem;">
+            <span>💬 BOOK ON WHATSAPP</span>
+          </button>
+        </form>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Congratulations Modal Popup -->
+  <div class="modal-overlay" id="bookingModal">
+    <div class="modal-content">
+      <div class="modal-icon">🎉</div>
+      <h2>Congratulations!</h2>
+      <p style="color: var(--accent-green); font-weight: 600;">Your ride request has been registered!</p>
+      
+      <div class="modal-details">
+        <p><strong>Name:</strong> <span id="modalName"></span></p>
+        <p><strong>Travel Date:</strong> <span id="modalDate"></span></p>
+        <p><strong>Time:</strong> <span id="modalTime"></span></p>
+      </div>
+
+      <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1.2rem;">Click below to open WhatsApp and confirm your trip directly with Mauli Travel admin.</p>
+      
+      <div style="display: flex; gap: 1rem;">
+        <a id="modalWaBtn" href="#" target="_blank" class="btn-primary" style="background: #25d366; text-decoration: none;">Open WhatsApp</a>
+        <button onclick="closeModal()" class="calendar-nav-btn" style="padding: 0.8rem 1.2rem;">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <p>MAULI TRAVEL • Buldana, Maharashtra • Cab Service & Tour Packages</p>
+  </footer>
+
+  <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>
