@@ -46,8 +46,6 @@ def get_db_connection():
     """
 
     if DATABASE_URL:
-        # Some hosting providers may provide postgres://
-        # psycopg2 expects postgresql://
         database_url = DATABASE_URL
 
         if database_url.startswith('postgres://'):
@@ -57,9 +55,10 @@ def get_db_connection():
                 1
             )
 
-        conn = psycopg2.connect(database_url)
-        conn.cursor_factory = RealDictCursor
-        return conn
+        return psycopg2.connect(
+            database_url,
+            cursor_factory=RealDictCursor
+        )
 
     # Local SQLite connection
     conn = sqlite3.connect(DB_PATH)
