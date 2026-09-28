@@ -150,15 +150,13 @@ init_db()
 # =========================================================
 
 def execute_query(conn, query, params=()):
-    """
-    PostgreSQL uses %s placeholders.
-    SQLite uses ? placeholders.
-    """
-
     if is_postgres():
         query = query.replace('?', '%s')
-
-    return conn.execute(query, params)
+        cursor = conn.cursor()
+        cursor.execute(query, params)
+        return cursor
+    else:
+        return conn.execute(query, params)
 
 
 # =========================================================
